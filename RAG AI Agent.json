@@ -53,13 +53,13 @@
       "parameters": {
         "toolDescription": "=",
         "method": "POST",
-        "url": "https://prod-1-data.ke.pinecone.io/assistant/chat/rag-ai-agent",
+        "url": "Add your api key",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Api-Key",
-              "value": "pcsk_2E616U_MMQpotpmwpfFwqPnAhLsbbqhHXjiNDBNiSu4H6nFshc4kBsqbP7s3gUJsyZkkLN"
+              "value": "Add your api key"
             }
           ]
         },
