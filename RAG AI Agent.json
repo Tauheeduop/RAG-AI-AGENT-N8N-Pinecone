@@ -1,0 +1,128 @@
+{
+  "name": "RAG AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "68d94dcf-6892-49b9-b512-64a1fbcba46c",
+      "name": "When chat message received",
+      "webhookId": "41a36d86-a84b-4008-b542-bc2b6e50f0ab"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant for searching and analysing documents from pinecone"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "3ec62ff5-a3c7-4b1d-834f-6137ccfe1781",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        112,
+        192
+      ],
+      "id": "0119bcc0-e0bf-46a8-b4bc-48344cee885f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Z006Q1RL7PaTTzfs",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "=",
+        "method": "POST",
+        "url": "https://prod-1-data.ke.pinecone.io/assistant/chat/rag-ai-agent",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "pcsk_2E616U_MMQpotpmwpfFwqPnAhLsbbqhHXjiNDBNiSu4H6nFshc4kBsqbP7s3gUJsyZkkLN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{$fromAI(\"SearchQuery\")}}}\"\n    }\n  ],\n  \"stream\": false,\n  \"model\": \"gemini-2.5-flash\"\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        432,
+        176
+      ],
+      "id": "8e9e022e-4ca0-4046-b389-e5fbf9ba98f5",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "25cbd070-3bfa-494b-9b7a-5add4796feb3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d93d087c6af661c1d4fa41e23159bee1f67c5069f475e9808b4dab2185595076"
+  },
+  "id": "oyB5ZxOGriUoy8eU",
+  "tags": []
+}
